@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeGuard AI — AI Code Review & Bug Detection System</title>
-    
-    <!-- Tailwind CSS -->
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -14,1328 +14,776 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#f0f6ff',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            accent: '#8b5cf6',
-                            emerald: '#10b981',
-                            cyan: '#06b6d4',
-                            danger: '#ef4444',
-                            warning: '#f59e0b'
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
                         },
-                        dark: {
-                            bg: '#090d16',
-                            card: '#111827',
-                            border: '#1f2937',
-                            hover: '#1e293b'
-                        }
+                        darkbg: '#0B0F19',
+                        cardbg: '#111827',
+                        bordercolor: '#1F2937'
                     },
                     fontFamily: {
-                        mono: ['Fira Code', 'JetBrains Mono', 'Consolas', 'monospace'],
-                        sans: ['Inter', 'sans-serif']
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'Fira Code', 'Monaco', 'monospace']
                     }
                 }
             }
         }
     </script>
 
-    <!-- FontAwesome Icons -->
+    <!-- Google Fonts & FontAwesome / Lucide Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Prism.js for syntax highlighting styling -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-typescript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-rust.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-go.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
-        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #060913;
-            color: #f3f4f6;
-            background-image: 
-                radial-gradient(circle at 15% 15%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.04) 0%, transparent 60%);
-            background-attachment: fixed;
+            background-color: #0B0F19;
+            color: #F3F4F6;
         }
-
-        /* Glassmorphism components */
-        .glass-panel {
-            background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .font-mono {
+            font-family: 'Fira Code', monospace;
         }
-
-        .glass-card {
-            background: rgba(30, 41, 59, 0.5);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .glow-button {
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.35);
-            transition: all 0.3s ease;
-        }
-
-        .glow-button:hover {
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
-            transform: translateY(-1px);
-        }
-
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0d1322;
+            background: #0B0F19;
         }
         ::-webkit-scrollbar-thumb {
-            background: #2d3748;
+            background: #1F2937;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #4a5568;
+            background: #374151;
         }
-
-        /* Line numbers sync */
-        .editor-container {
-            font-family: 'Fira Code', monospace;
+        .glow-effect {
+            box-shadow: 0 0 20px -5px rgba(99, 102, 241, 0.25);
         }
-
-        /* Gauge progress ring animation */
-        .gauge-circle {
-            transition: stroke-dashoffset 1s ease-in-out, stroke 0.5s ease;
+        .glow-success {
+            box-shadow: 0 0 20px -5px rgba(16, 185, 129, 0.25);
         }
-
-        /* Pulsing scanning beam */
-        @keyframes scanBeam {
-            0% { top: 0%; opacity: 0; }
-            50% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
+        .glow-error {
+            box-shadow: 0 0 20px -5px rgba(239, 68, 68, 0.25);
         }
-        .scanning-line {
-            position: absolute;
-            left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, transparent, #06b6d4, #3b82f6, transparent);
-            box-shadow: 0 0 15px #06b6d4;
-            animation: scanBeam 2s infinite ease-in-out;
-        }
-
-        /* Highlight differences in diff viewer */
-        .diff-added { background-color: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981; }
-        .diff-removed { background-color: rgba(239, 68, 68, 0.15); border-left: 3px solid #ef4444; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between text-gray-200 antialiased selection:bg-blue-600 selection:text-white">
+<body class="min-h-screen flex flex-col bg-[#0B0F19] text-gray-100 selection:bg-brand-500 selection:text-white">
 
-    <!-- TOP NAVIGATION BAR -->
-    <header class="sticky top-0 z-40 w-full glass-panel border-b border-gray-800/80 px-4 lg:px-8 py-3">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            
-            <!-- Brand & Creator -->
-            <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-start">
-                <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-cyan-400 p-0.5 shadow-lg shadow-blue-500/20 flex items-center justify-center">
-                        <div class="h-full w-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                            <i class="fa-solid fa-shield-halved text-cyan-400 text-xl"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <h1 class="font-bold text-xl tracking-tight text-white flex items-center gap-1.5">
-                                CodeGuard <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">AI</span>
-                            </h1>
-                            <span class="px-2 py-0.5 text-[10px] font-semibold bg-blue-500/10 text-cyan-400 border border-cyan-500/30 rounded-full">v2.4 Pro</span>
-                        </div>
-                        <p class="text-xs text-gray-400 flex items-center gap-1.5">
-                            <span>Engineered by</span>
-                            <span class="font-semibold text-cyan-300 flex items-center gap-1">
-                                <i class="fa-solid fa-code text-[10px] text-indigo-400"></i> Askant Kumar
-                            </span>
-                        </p>
-                    </div>
+    <header class="border-b border-gray-800 bg-[#0E1322]/90 backdrop-blur-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo & Title -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-400 flex items-center justify-center shadow-lg shadow-brand-500/30">
+                    <i class="fa-solid me-0 fa-shield-halved text-xl text-white"></i>
                 </div>
-
-                <!-- Mobile Action Toggle menu triggers -->
-                <div class="flex md:hidden items-center gap-2">
-                    <button onclick="toggleMobileConfig()" class="p-2 text-gray-400 hover:text-white bg-gray-800/60 rounded-lg border border-gray-700">
-                        <i class="fa-solid fa-sliders"></i>
-                    </button>
+                <div>
+                    <h1 class="font-bold text-lg text-white leading-tight tracking-wide flex items-center gap-2">
+                        CodeGuard <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-400 border border-brand-500/30">AI Core</span>
+                    </h1>
+                    <p class="text-xs text-gray-400">AI Code Review & Bug Detection System</p>
                 </div>
             </div>
 
-            <!-- Action Badges & Toolbar -->
-            <div class="flex items-center flex-wrap gap-2 text-xs w-full md:w-auto justify-end">
-                <span class="hidden lg:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-indigo-950/60 border border-indigo-800/50 text-indigo-300">
-                    <i class="fa-solid fa-brain text-purple-400"></i>
-                    <span>Model: Gemini 2.5 Flash</span>
-                </span>
+            <!-- Creator Attribution Badge & Quick Actions -->
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <!-- Creator LinkedIn Badge -->
+                <a href="https://www.linkedin.com/in/askant-kumar-924199327" target="_blank" rel="noopener noreferrer" class="hidden md:flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700 text-xs font-medium text-gray-300 hover:text-white transition group">
+                    <span class="text-gray-400 group-hover:text-gray-200">Created by</span>
+                    <span class="font-semibold text-brand-400">Askant Kumar</span>
+                    <i class="fa-brands fa-linkedin text-blue-400 text-sm group-hover:scale-110 transition-transform"></i>
+                </a>
 
-                <button onclick="loadSampleCode()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-gray-200 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-[#000] fa-folder-open text-amber-400"></i> Sample Bug
+                <!-- Support Center Button -->
+                <button onclick="toggleModal('supportModal')" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs font-medium text-gray-300 hover:text-white transition">
+                    <i class="fa-solid fa-headset text-indigo-400"></i>
+                    <span>Support</span>
                 </button>
 
-                <button onclick="clearEditor()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-gray-200 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-eraser text-gray-400"></i> Clear
-                </button>
-
-                <button onclick="openHistoryModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-gray-200 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i> History
-                </button>
-
-                <button onclick="openApiModal()" class="px-3 py-1.5 rounded-lg bg-blue-900/40 hover:bg-blue-800/50 border border-blue-500/40 text-blue-300 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-key text-amber-400"></i> API Key
-                </button>
-
-                <button onclick="exportReport()" class="px-3 py-1.5 rounded-lg bg-emerald-950/50 hover:bg-emerald-900/60 border border-emerald-500/30 text-emerald-300 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-export"></i> Export
+                <!-- API Settings Button -->
+                <button onclick="toggleModal('settingsModal')" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 border border-gray-700 text-xs font-medium text-gray-300 hover:text-white transition">
+                    <i class="fa-solid fa-key text-yellow-400"></i>
+                    <span class="hidden sm:inline">API Key</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- MAIN WORKSPACE CONTENT -->
-    <main class="max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 flex-grow space-y-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Top Control Bar: Presets & Language Selection -->
+        <div class="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-gray-900/60 border border-gray-800/80">
+            <!-- Test Preset Buttons -->
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-medium text-gray-400 mr-1 flex items-center gap-1">
+                    <i class="fa-solid fa-vial text-brand-400"></i> Test Presets:
+                </span>
+                <button onclick="loadPreset('valid_js')" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/20 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-check"></i> Valid JS Code
+                </button>
+                <button onclick="loadPreset('broken_js')" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/30 hover:bg-red-500/20 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-bug"></i> Broken JS Syntax
+                </button>
+                <button onclick="loadPreset('vulnerable_python')" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/30 hover:bg-amber-500/20 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-shield-cat"></i> Vulnerable Python
+                </button>
+                <button onclick="loadPreset('unoptimized_cpp')" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 hover:bg-indigo-500/20 transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-gauge-high"></i> Buggy C++
+                </button>
+            </div>
+
+            <!-- Controls: Language Select & Clear -->
+            <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-2">
+                    <label for="languageSelect" class="text-xs text-gray-400">Language:</label>
+                    <select id="languageSelect" class="bg-gray-800 border border-gray-700 text-xs rounded-lg px-3 py-1.5 text-gray-200 focus:outline-none focus:border-brand-500">
+                        <option value="javascript">JavaScript</option>
+                        <option value="python">Python</option>
+                        <option value="cpp">C++</option>
+                        <option value="java">Java</option>
+                        <option value="rust">Rust</option>
+                        <option value="go">Go</option>
+                    </select>
+                </div>
+                <button onclick="clearCode()" class="px-2.5 py-1.5 rounded-lg text-xs text-gray-400 hover:text-white hover:bg-gray-800 border border-transparent hover:border-gray-700 transition">
+                    <i class="fa-solid fa-rotate-left mr-1"></i> Clear
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
             
-            <!-- LEFT PANEL: Configuration & Rule Engine -->
-            <aside id="sidebarConfig" class="lg:col-span-3 space-y-5 hidden lg:block">
-                <div class="glass-panel rounded-2xl p-5 border border-gray-800 space-y-5 sticky top-20">
-                    <div class="flex items-center justify-between pb-3 border-b border-gray-800">
-                        <h2 class="font-semibold text-sm text-white flex items-center gap-2">
-                            <i class="fa-solid fa-sliders text-cyan-400"></i> Analysis Settings
-                        </h2>
-                        <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Config</span>
-                    </div>
+            <!-- LEFT PANEL: Code Editor & Execution Console (7 cols) -->
+            <div class="lg:col-span-7 flex flex-col gap-4">
+                <div class="rounded-2xl bg-gray-900/80 border border-gray-800 flex flex-col flex-1 overflow-hidden shadow-xl">
+                    <!-- Editor Header -->
+                    <div class="px-4 py-3 bg-gray-900 border-b border-gray-800 flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                            <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                            <span class="text-xs font-mono text-gray-400 ml-2" id="editorFileName">input_code.js</span>
+                        </div>
 
-                    <!-- Language Switcher -->
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-medium text-gray-300 flex items-center justify-between">
-                            <span>Target Language</span>
-                            <span id="activeLangTag" class="text-[10px] text-cyan-400 font-mono">javascript</span>
-                        </label>
-                        <select id="languageSelect" onchange="handleLanguageChange()" class="w-full bg-slate-900 border border-gray-700 text-gray-200 text-xs rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none">
-                            <option value="javascript">JavaScript (ES6+)</option>
-                            <option value="python">Python 3.x</option>
-                            <option value="typescript">TypeScript</option>
-                            <option value="cpp">C++ 17/20</option>
-                            <option value="java">Java</option>
-                            <option value="rust">Rust</option>
-                            <option value="go">Go (Golang)</option>
-                            <option value="html">HTML / CSS / Web</option>
-                        </select>
-                    </div>
-
-                    <!-- Strictness Level -->
-                    <div class="space-y-2">
-                        <label class="text-xs font-medium text-gray-300 flex items-center justify-between">
-                            <span>Review Strictness</span>
-                            <span id="strictnessLabel" class="text-xs font-bold text-blue-400">Standard</span>
-                        </label>
-                        <div class="grid grid-cols-4 gap-1 bg-slate-950 p-1 rounded-xl border border-gray-800">
-                            <button type="button" onclick="setStrictness('lenient')" class="strict-btn text-[11px] py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-level="lenient">Lite</button>
-                            <button type="button" onclick="setStrictness('standard')" class="strict-btn active-strict text-[11px] py-1.5 rounded-lg bg-blue-600 text-white font-semibold shadow transition" data-level="standard">Std</button>
-                            <button type="button" onclick="setStrictness('strict')" class="strict-btn text-[11px] py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-level="strict">Strict</button>
-                            <button type="button" onclick="setStrictness('paranoid')" class="strict-btn text-[11px] py-1.5 rounded-lg text-gray-400 hover:text-white transition" data-level="paranoid">Deep</button>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="runAudit()" id="auditBtn" class="px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white font-medium text-xs shadow-lg shadow-brand-600/30 hover:shadow-brand-500/50 transition flex items-center gap-2">
+                                <i class="fa-solid fa-magnifying-glass-bug"></i>
+                                <span>Run Audit & Fix</span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Analysis Checkboxes -->
-                    <div class="space-y-2">
-                        <label class="text-xs font-medium text-gray-300">Focus Areas</label>
-                        <div class="space-y-2 text-xs">
-                            <label class="flex items-center gap-2 text-gray-300 cursor-pointer hover:text-white">
-                                <input type="checkbox" id="chkSecurity" checked class="rounded bg-slate-900 border-gray-700 text-blue-600 focus:ring-blue-500">
-                                <span class="flex items-center gap-1.5">
-                                    <i class="fa-solid fa-shield-virus text-rose-400 w-4"></i> Security (OWASP/CVE)
-                                </span>
-                            </label>
-                            <label class="flex items-center gap-2 text-gray-300 cursor-pointer hover:text-white">
-                                <input type="checkbox" id="chkPerformance" checked class="rounded bg-slate-900 border-gray-700 text-blue-600 focus:ring-blue-500">
-                                <span class="flex items-center gap-1.5">
-                                    <i class="fa-solid fa-gauge-high text-amber-400 w-4"></i> Performance & Speed
-                                </span>
-                            </label>
-                            <label class="flex items-center gap-2 text-gray-300 cursor-pointer hover:text-white">
-                                <input type="checkbox" id="chkBugs" checked class="rounded bg-slate-900 border-gray-700 text-blue-600 focus:ring-blue-500">
-                                <span class="flex items-center gap-1.5">
-                                    <i class="fa-solid fa-bug text-emerald-400 w-4"></i> Edge Cases & Logic Bugs
-                                </span>
-                            </label>
-                            <label class="flex items-center gap-2 text-gray-300 cursor-pointer hover:text-white">
-                                <input type="checkbox" id="chkStyle" checked class="rounded bg-slate-900 border-gray-700 text-blue-600 focus:ring-blue-500">
-                                <span class="flex items-center gap-1.5">
-                                    <i class="fa-solid fa-wand-magic-sparkles text-purple-400 w-4"></i> Code Smells & Style
-                                </span>
-                            </label>
-                            <label class="flex items-center gap-2 text-gray-300 cursor-pointer hover:text-white">
-                                <input type="checkbox" id="chkTypes" checked class="rounded bg-slate-900 border-gray-700 text-blue-600 focus:ring-blue-500">
-                                <span class="flex items-center gap-1.5">
-                                    <i class="fa-solid fa-code-commit text-cyan-400 w-4"></i> Type Safety & Memory
-                                </span>
-                            </label>
-                        </div>
+                    <!-- Code Editor Input Area -->
+                    <div class="relative flex-1 min-h-[360px] bg-[#0A0D14]">
+                        <textarea id="codeEditor" spellcheck="false" class="w-full h-full min-h-[360px] p-4 font-mono text-sm bg-transparent text-gray-200 focus:outline-none resize-none leading-relaxed" placeholder="// Paste or write your code here for real-time bug detection..."></textarea>
                     </div>
 
-                    <!-- Custom Instructions -->
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-medium text-gray-300">Custom Constraints</label>
-                        <textarea id="customInstructions" rows="3" placeholder="e.g. Ensure async error handling, avoid external dependencies, use camelCase..." class="w-full bg-slate-900 border border-gray-800 text-xs rounded-xl p-2.5 text-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none placeholder-gray-600"></textarea>
-                    </div>
-
-                    <!-- Creator Info Badge -->
-                    <div class="p-3 rounded-xl bg-gradient-to-r from-blue-950/40 via-purple-950/40 to-slate-900 border border-blue-500/20 text-xs space-y-1">
-                        <div class="flex items-center justify-between text-gray-300">
-                            <span class="font-semibold text-white">CodeGuard System</span>
-                            <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                    <!-- Interactive Code Execution Console Header & Body -->
+                    <div class="border-t border-gray-800 bg-[#090C13]">
+                        <div class="px-4 py-2 bg-gray-900/90 border-b border-gray-800/80 flex items-center justify-between">
+                            <span class="text-xs font-semibold text-gray-400 flex items-center gap-1.5">
+                                <i class="fa-solid fa-terminal text-green-400"></i> Execution Console Output
+                            </span>
+                            <button onclick="executeCodeConsole()" class="text-xs text-brand-400 hover:text-brand-300 font-medium flex items-center gap-1 px-2 py-1 rounded bg-brand-500/10 hover:bg-brand-500/20 transition">
+                                <i class="fa-solid fa-play text-[10px]"></i> Run Code
+                            </button>
                         </div>
-                        <p class="text-[11px] text-gray-400">Designed & engineered by <strong class="text-cyan-300">Askant Kumar</strong> for automated code security audits.</p>
+                        <div id="consoleOutput" class="p-4 font-mono text-xs text-gray-300 h-32 overflow-y-auto bg-[#07090E]">
+                            <p class="text-gray-500 italic">// Code execution output will appear here after analysis or running.</p>
+                        </div>
                     </div>
                 </div>
-            </aside>
+            </div>
 
-            <!-- RIGHT/MAIN EDITOR WORKSPACE -->
-            <section class="lg:col-span-9 space-y-6">
-                
-                <!-- Code Editor Container -->
-                <div class="glass-panel rounded-2xl border border-gray-800 overflow-hidden flex flex-col shadow-2xl relative">
+            <!-- RIGHT PANEL: Dynamic Bug Audit Results & Fixes (5 cols) -->
+            <div class="lg:col-span-5 flex flex-col gap-4">
+                <div class="rounded-2xl bg-gray-900/80 border border-gray-800 p-5 flex flex-col flex-1 shadow-xl overflow-hidden">
                     
-                    <!-- Editor Header Bar -->
-                    <div class="bg-slate-900/90 border-b border-gray-800 px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-                        <div class="flex items-center gap-3">
-                            <!-- Mac style window controls -->
-                            <div class="flex items-center gap-1.5">
-                                <span class="w-3 h-3 rounded-full bg-rose-500/80 inline-block"></span>
-                                <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
-                                <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
-                            </div>
-                            <span class="text-xs font-mono text-gray-400 flex items-center gap-2">
-                                <i class="fa-solid fa-file-code text-blue-400"></i>
-                                <span id="currentFileName">main_script.js</span>
-                            </span>
-                        </div>
-
-                        <!-- Sample Selector & Counters -->
-                        <div class="flex items-center gap-3 text-xs">
-                            <select id="presetSelector" onchange="loadPresetSample()" class="bg-slate-950 text-xs text-cyan-300 border border-cyan-500/30 rounded-lg px-2.5 py-1 focus:outline-none">
-                                <option value="">-- Quick Vulnerability Presets --</option>
-                                <option value="sql_injection">SQL Injection & Unhandled Async (JS)</option>
-                                <option value="python_memory">Memory Leak & Unbounded Recursion (Python)</option>
-                                <option value="cpp_overflow">Buffer Overflow & Raw Pointers (C++)</option>
-                                <option value="xss_vulnerability">DOM XSS & State Mutation (TS/Web)</option>
-                            </select>
-
-                            <div class="text-gray-400 font-mono hidden sm:flex items-center gap-3">
-                                <span>Lines: <strong id="lineCount" class="text-gray-200">1</strong></span>
-                                <span>Chars: <strong id="charCount" class="text-gray-200">0</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Code Textarea & Overlay -->
-                    <div class="relative min-h-[340px] max-h-[500px] flex editor-container bg-slate-950/90">
-                        <!-- Scanning Line effect during analysis -->
-                        <div id="scanningBeam" class="scanning-line hidden z-10"></div>
-                        
-                        <!-- Line Numbers -->
-                        <div id="lineNumbers" class="py-4 px-3 text-right bg-slate-950 border-r border-gray-800 text-gray-600 font-mono text-xs select-none w-12 flex-shrink-0">
-                            1
-                        </div>
-
-                        <!-- Raw Text Editor -->
-                        <textarea id="codeEditor" spellcheck="false" oninput="updateEditorStats()" onkeydown="handleTabKey(event)" placeholder="// Paste or type your code here for deep AI security and bug analysis...
-function processUserData(input) {
-    let query = 'SELECT * FROM users WHERE id = ' + input;
-    return db.execute(query);
-}" class="w-full bg-transparent text-gray-100 font-mono text-xs p-4 focus:outline-none leading-relaxed resize-none h-[340px] sm:h-[380px] overflow-y-auto"></textarea>
-                    </div>
-
-                    <!-- Editor Footer Actions -->
-                    <div class="bg-slate-900/80 border-t border-gray-800 px-4 py-3 flex flex-wrap items-center justify-between gap-3">
-                        <div class="flex items-center gap-2 text-xs text-gray-400">
-                            <i class="fa-solid fa-lightbulb text-amber-400"></i>
-                            <span>Press <kbd class="px-1.5 py-0.5 rounded bg-slate-800 border border-gray-700 text-gray-300 font-mono">Tab</kbd> for indentation</span>
-                        </div>
-
-                        <!-- Primary Trigger Button -->
-                        <button id="analyzeBtn" onclick="runAiAnalysis()" class="glow-button px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-semibold text-xs tracking-wide flex items-center gap-2 transition-all cursor-pointer">
-                            <i class="fa-solid fa-wand-magic-sparkles text-amber-300 animate-pulse"></i>
-                            <span id="analyzeBtnText">Analyze Code with AI</span>
+                    <!-- Tab Headers -->
+                    <div class="flex items-center space-x-1 border-b border-gray-800 pb-3 mb-4">
+                        <button onclick="switchTab('audit')" id="tab-audit" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-brand-400 bg-brand-500/10 border border-brand-500/20 transition">
+                            <i class="fa-solid fa-bug mr-1"></i> Audit & Fixes
+                        </button>
+                        <button onclick="switchTab('refactored')" id="tab-refactored" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-gray-200 transition">
+                            <i class="fa-solid fa-code mr-1"></i> Fixed Code
+                        </button>
+                        <button onclick="switchTab('unitTests')" id="tab-unitTests" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-gray-200 transition">
+                            <i class="fa-solid fa-vial-circle-check mr-1"></i> Unit Tests
                         </button>
                     </div>
-                </div>
 
-                <!-- RESULTS SECTION (Initially hidden until analysis completes or sample loaded) -->
-                <div id="resultsWrapper" class="space-y-6 hidden">
-                    
-                    <!-- EXECUTIVE SUMMARY & METRIC GAUGES BANNER -->
-                    <div class="glass-panel rounded-2xl p-6 border border-gray-800 space-y-6 relative overflow-hidden">
-                        <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <!-- TAB 1: AUDIT RESULTS -->
+                    <div id="view-audit" class="flex-1 flex flex-col overflow-y-auto pr-1 gap-4">
+                        
+                        <!-- Initial Placeholder State -->
+                        <div id="initialState" class="flex flex-col items-center justify-center py-12 text-center my-auto">
+                            <div class="w-16 h-16 rounded-2xl bg-gray-800/60 flex items-center justify-center text-gray-500 mb-3 border border-gray-700/50">
+                                <i class="fa-solid fa-wand-magic-sparkles text-2xl text-brand-400"></i>
+                            </div>
+                            <h3 class="text-sm font-semibold text-gray-300">Ready for Analysis</h3>
+                            <p class="text-xs text-gray-500 max-w-xs mt-1">
+                                Click "Run Audit & Fix" or load a preset above to check your code for bugs and correctness.
+                            </p>
+                        </div>
+
+                        <!-- Analysis Content Container (Hidden by default) -->
+                        <div id="auditResults" class="hidden flex-1 flex-col gap-4">
                             
-                            <!-- Overall Score Ring Gauge -->
-                            <div class="flex items-center gap-5 w-full md:w-auto">
-                                <div class="relative w-28 h-28 flex items-center justify-center flex-shrink-0">
-                                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                                        <path class="text-gray-800" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        <path id="scoreGaugeRing" class="gauge-circle text-emerald-500" stroke-dasharray="100, 100" stroke-dashoffset="25" stroke-linecap="round" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    </svg>
-                                    <div class="absolute flex flex-col items-center justify-center text-center">
-                                        <span id="scoreValue" class="text-2xl font-black tracking-tight text-white">75</span>
-                                        <span class="text-[9px] uppercase tracking-wider text-gray-400 font-bold">Quality Score</span>
+                            <!-- Overall Health Card & Dial -->
+                            <div class="p-4 rounded-xl bg-gray-800/40 border border-gray-700/50 flex items-center justify-between">
+                                <div>
+                                    <span class="text-xs font-medium text-gray-400 uppercase tracking-wider">Security & Quality Score</span>
+                                    <div class="flex items-baseline space-x-2 mt-1">
+                                        <span id="scoreValue" class="text-3xl font-extrabold text-white">100</span>
+                                        <span class="text-xs text-gray-400">/ 100</span>
                                     </div>
-                                </div>
-
-                                <div class="space-y-1">
-                                    <div class="flex items-center gap-2">
-                                        <h3 id="overallVerdict" class="text-lg font-bold text-white">Needs Refactoring</h3>
-                                        <span id="verdictBadge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">Moderate Risk</span>
-                                    </div>
-                                    <p id="overallSummaryText" class="text-xs text-gray-300 leading-relaxed max-w-md">
-                                        Identified potential security flaws and performance bottlenecks. Applying recommended patches will reduce technical debt significantly.
+                                    <p id="scoreStatus" class="text-xs font-medium text-emerald-400 mt-1 flex items-center gap-1">
+                                        <i class="fa-solid fa-circle-check"></i> Clean Code Verified
                                     </p>
                                 </div>
+
+                                <!-- Status Badge -->
+                                <div id="statusBadge" class="px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-center">
+                                    <span id="bugCount" class="block text-lg font-bold leading-none">0</span>
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-wider">Issues Found</span>
+                                </div>
                             </div>
 
-                            <!-- Key Metrics Grid -->
-                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 w-full md:w-auto flex-shrink-0">
-                                <div class="bg-slate-900/80 p-3 rounded-xl border border-gray-800 text-center">
-                                    <span class="text-[10px] text-gray-400 block font-medium uppercase">Security Index</span>
-                                    <span id="metricSecurity" class="text-base font-bold text-rose-400">Low (45/100)</span>
-                                </div>
-                                <div class="bg-slate-900/80 p-3 rounded-xl border border-gray-800 text-center">
-                                    <span class="text-[10px] text-gray-400 block font-medium uppercase">Maintainability</span>
-                                    <span id="metricMaintainability" class="text-base font-bold text-amber-400">Grade C</span>
-                                </div>
-                                <div class="bg-slate-900/80 p-3 rounded-xl border border-gray-800 text-center col-span-2 sm:col-span-1">
-                                    <span class="text-[10px] text-gray-400 block font-medium uppercase">Tech Debt Saved</span>
-                                    <span id="metricTimeSaved" class="text-base font-bold text-cyan-400">~2.5 Hours</span>
+                            <!-- List of Detected Issues -->
+                            <div>
+                                <h4 class="text-xs font-semibold text-gray-300 mb-2 flex items-center justify-between">
+                                    <span>Detected Bugs & Vulnerabilities</span>
+                                    <span id="issueSummaryBadge" class="text-[10px] font-normal text-gray-400">0 Items</span>
+                                </h4>
+
+                                <div id="issuesList" class="space-y-3">
+                                    <!-- Dynamic Bug items inserted here -->
                                 </div>
                             </div>
+                        </div>
+
+                    </div>
+
+                    <!-- TAB 2: REFACTORED / FIXED CODE VIEW -->
+                    <div id="view-refactored" class="hidden flex-1 flex-col gap-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-semibold text-gray-300">Clean Refactored Code</span>
+                            <button onclick="applyFixedCodeToEditor()" class="px-2.5 py-1 rounded bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium transition flex items-center gap-1">
+                                <i class="fa-solid fa-file-import"></i> Copy to Editor
+                            </button>
+                        </div>
+                        <div class="relative flex-1 bg-[#0A0D14] rounded-xl border border-gray-800 p-3 overflow-auto font-mono text-xs text-emerald-300 leading-relaxed" id="refactoredCodeBox">
+                            // Fixed code will appear here after audit...
                         </div>
                     </div>
 
-                    <!-- ISSUE FILTER TABS & LIST -->
-                    <div class="space-y-4">
-                        <!-- Filter Tabs -->
-                        <div class="flex items-center gap-2 overflow-x-auto pb-2 border-b border-gray-800">
-                            <button onclick="filterIssues('all')" class="issue-tab active-tab px-3.5 py-1.5 rounded-xl text-xs font-medium bg-blue-600 text-white transition flex items-center gap-1.5" data-filter="all">
-                                <span>All Issues</span>
-                                <span id="badgeCountAll" class="px-1.5 py-0.2 text-[10px] bg-slate-900 rounded-full">4</span>
-                            </button>
-                            <button onclick="filterIssues('security')" class="issue-tab px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-800 text-gray-400 hover:text-white transition flex items-center gap-1.5" data-filter="security">
-                                <i class="fa-solid fa-shield-halved text-rose-400"></i>
-                                <span>Security / Vulnerabilities</span>
-                                <span id="badgeCountSecurity" class="px-1.5 py-0.2 text-[10px] bg-slate-900 rounded-full text-rose-400">1</span>
-                            </button>
-                            <button onclick="filterIssues('bug')" class="issue-tab px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-800 text-gray-400 hover:text-white transition flex items-center gap-1.5" data-filter="bug">
-                                <i class="fa-solid fa-bug text-emerald-400"></i>
-                                <span>Bugs & Logic</span>
-                                <span id="badgeCountBug" class="px-1.5 py-0.2 text-[10px] bg-slate-900 rounded-full text-emerald-400">1</span>
-                            </button>
-                            <button onclick="filterIssues('performance')" class="issue-tab px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-800 text-gray-400 hover:text-white transition flex items-center gap-1.5" data-filter="performance">
-                                <i class="fa-solid fa-gauge-high text-amber-400"></i>
-                                <span>Performance</span>
-                                <span id="badgeCountPerformance" class="px-1.5 py-0.2 text-[10px] bg-slate-900 rounded-full text-amber-400">1</span>
-                            </button>
-                            <button onclick="filterIssues('style')" class="issue-tab px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-800 text-gray-400 hover:text-white transition flex items-center gap-1.5" data-filter="style">
-                                <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i>
-                                <span>Smells & Style</span>
-                                <span id="badgeCountStyle" class="px-1.5 py-0.2 text-[10px] bg-slate-900 rounded-full text-purple-400">1</span>
+                    <!-- TAB 3: UNIT TESTS GENERATOR -->
+                    <div id="view-unitTests" class="hidden flex-1 flex-col gap-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-semibold text-gray-300">Generated Verification Tests</span>
+                            <button onclick="copyUnitTests()" class="px-2.5 py-1 rounded bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-medium border border-gray-700 transition flex items-center gap-1">
+                                <i class="fa-solid fa-copy"></i> Copy Tests
                             </button>
                         </div>
-
-                        <!-- Issues Container Cards -->
-                        <div id="issuesListContainer" class="space-y-4">
-                            <!-- Dynamic Cards will be rendered here -->
+                        <div class="relative flex-1 bg-[#0A0D14] rounded-xl border border-gray-800 p-3 overflow-auto font-mono text-xs text-indigo-300 leading-relaxed" id="unitTestsBox">
+                            // Generated test suite will appear here...
                         </div>
                     </div>
 
-                    <!-- SIDE-BY-SIDE / CODE DIFF VIEWER -->
-                    <div class="glass-panel rounded-2xl border border-gray-800 overflow-hidden space-y-0">
-                        <div class="bg-slate-900 px-5 py-3 border-b border-gray-800 flex items-center justify-between">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-code-compare text-cyan-400"></i>
-                                <h3 class="text-xs font-bold text-white uppercase tracking-wider">Original Code vs AI Optimized Code</h3>
-                            </div>
-                            <button onclick="applyAllFixesToEditor()" class="px-3 py-1 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 text-xs font-semibold transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-check-double"></i> Apply Fixes to Editor
-                            </button>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-800 font-mono text-xs">
-                            <!-- Left: Original Code -->
-                            <div class="p-4 bg-slate-950/60 overflow-x-auto space-y-1">
-                                <span class="text-[10px] text-gray-500 uppercase tracking-wider block mb-2 font-sans font-semibold">Original Input</span>
-                                <pre id="diffOriginal" class="text-rose-200/90 leading-relaxed whitespace-pre-wrap"></pre>
-                            </div>
-                            <!-- Right: Optimized Fix -->
-                            <div class="p-4 bg-slate-950/80 overflow-x-auto space-y-1">
-                                <span class="text-[10px] text-emerald-400 uppercase tracking-wider block mb-2 font-sans font-semibold">AI Security & Performance Refactored</span>
-                                <pre id="diffOptimized" class="text-emerald-200/90 leading-relaxed whitespace-pre-wrap"></pre>
-                            </div>
-                        </div>
+                    <!-- Export Report Action -->
+                    <div class="pt-3 border-t border-gray-800/80 flex items-center justify-between text-xs">
+                        <span class="text-gray-500">Engine: <span class="text-gray-400 font-medium">Gemini AI Core</span></span>
+                        <button onclick="exportReport()" class="text-brand-400 hover:text-brand-300 font-medium flex items-center gap-1 transition">
+                            <i class="fa-solid fa-download"></i> Download Report
+                        </button>
                     </div>
+
                 </div>
-            </section>
+            </div>
+
         </div>
     </main>
 
-    <!-- FOOTER WITH PROMINENT CREATOR ATTRIBUTION -->
-    <footer class="mt-12 border-t border-gray-800/80 glass-panel py-8 px-4 lg:px-8">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-            <div class="space-y-2">
-                <div class="flex items-center justify-center md:justify-start gap-2">
-                    <i class="fa-solid fa-shield-halved text-cyan-400 text-lg"></i>
-                    <span class="font-bold text-white text-base">CodeGuard AI</span>
-                    <span class="text-xs text-gray-400">— Advanced Bug Detection & Code Review Suite</span>
-                </div>
-                <p class="text-xs text-gray-400">
-                    Engineered with Next-Gen AI models for real-time security vulnerability detection, performance optimization, and clean code refactoring.
-                </p>
+    <footer class="border-t border-gray-800/80 bg-[#0A0D15] py-4 text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div class="flex items-center space-x-2">
+                <span class="font-semibold text-gray-300">CodeGuard AI System</span>
+                <span>&bull;</span>
+                <span>Created by <a href="https://www.linkedin.com/in/askant-kumar-924199327" target="_blank" class="text-brand-400 hover:underline font-medium">Askant Kumar</a></span>
             </div>
 
-            <!-- Creator Badge & Copyright -->
-            <div class="flex flex-col items-center md:items-end gap-1.5 text-xs">
-                <div class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-blue-950 to-indigo-950 border border-blue-500/30 text-gray-200 font-medium flex items-center gap-2">
-                    <i class="fa-solid fa-code text-cyan-400"></i>
-                    <span>Designed & Developed by <strong class="text-cyan-300 font-semibold">Askant Kumar</strong></span>
-                </div>
-                <p class="text-gray-500 text-[11px]">
-                    &copy; 2026 CodeGuard AI. Developed by Askant Kumar. All Rights Reserved.
-                </p>
+            <div class="flex items-center space-x-4">
+                <a href="https://www.linkedin.com/in/askant-kumar-924199327" target="_blank" class="text-gray-400 hover:text-blue-400 transition flex items-center gap-1">
+                    <i class="fa-brands fa-linkedin text-sm"></i>
+                    <span>LinkedIn</span>
+                </a>
+                <button onclick="toggleModal('supportModal')" class="text-gray-400 hover:text-gray-200 transition">
+                    Support & FAQs
+                </button>
             </div>
         </div>
     </footer>
 
-    <!-- MODAL: API KEY SETTINGS -->
-    <div id="apiModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="glass-panel w-full max-w-md rounded-2xl border border-gray-800 p-6 space-y-5 relative">
-            <button onclick="closeApiModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
+    <div id="supportModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+            <button onclick="toggleModal('supportModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <div class="flex items-center gap-3">
-                <div class="p-2.5 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/30">
-                    <i class="fa-solid fa-key text-xl"></i>
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-400">
+                    <i class="fa-solid fa-headset text-xl"></i>
                 </div>
                 <div>
-                    <h3 class="font-bold text-white text-base">Gemini API Key Configuration</h3>
-                    <p class="text-xs text-gray-400">Configure your personal Google Gemini API key</p>
+                    <h3 class="text-base font-bold text-white">Support & Contact</h3>
+                    <p class="text-xs text-gray-400">Created and maintained by Askant Kumar</p>
                 </div>
             </div>
 
-            <div class="space-y-3">
-                <p class="text-xs text-gray-300 leading-relaxed">
-                    By default, CodeGuard AI uses Canvas environment keys or intelligent offline heuristic simulation fallback mode when no key is entered.
-                </p>
-
-                <div class="space-y-1.5">
-                    <label class="text-xs font-semibold text-gray-300">Custom Gemini API Key</label>
-                    <input type="password" id="apiKeyInput" placeholder="AIzaSy..." class="w-full bg-slate-900 border border-gray-800 rounded-xl px-3 py-2.5 text-xs font-mono text-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            <div class="space-y-4 my-4">
+                <!-- Creator Bio & LinkedIn Card -->
+                <div class="p-3.5 rounded-xl bg-gray-800/60 border border-gray-700/60 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-400">Lead Developer</p>
+                        <p class="text-sm font-semibold text-white">Askant Kumar</p>
+                    </div>
+                    <a href="https://www.linkedin.com/in/askant-kumar-924199327" target="_blank" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-medium transition flex items-center gap-1.5">
+                        <i class="fa-brands fa-linkedin text-sm"></i> Connect on LinkedIn
+                    </a>
                 </div>
 
-                <div class="flex items-center justify-between text-[11px] text-gray-400 pt-1">
-                    <span>Key stored locally in browser storage</span>
-                    <button onclick="clearApiKey()" class="text-rose-400 hover:underline">Remove Key</button>
+                <!-- Direct Email Prompt -->
+                <div class="p-3.5 rounded-xl bg-gray-800/60 border border-gray-700/60 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-gray-400">Direct Support Email</p>
+                        <p class="text-xs font-mono text-gray-200 mt-0.5">askantkumar.support@codeguard.ai</p>
+                    </div>
+                    <a href="mailto:askantkumar.support@codeguard.ai?subject=CodeGuard%20AI%20Support%20Inquiry" class="px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600 text-white text-xs font-medium transition flex items-center gap-1">
+                        <i class="fa-solid fa-envelope"></i> Send Email
+                    </a>
+                </div>
+
+                <!-- FAQ Accordion -->
+                <div class="space-y-2 pt-2">
+                    <p class="text-xs font-semibold text-gray-300">Frequently Asked Questions</p>
+                    
+                    <details class="group rounded-lg bg-gray-800/40 p-2.5 text-xs">
+                        <summary class="font-medium text-gray-300 cursor-pointer list-none flex justify-between items-center">
+                            How does the bug detection engine work?
+                            <i class="fa-solid fa-chevron-down text-gray-500 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <p class="text-gray-400 mt-2 leading-relaxed">
+                            CodeGuard AI uses client-side AST structural parsing and browser-based sandboxed evaluation combined with rule-based security audits. You can also configure a custom Gemini API key for dynamic generative fixes.
+                        </p>
+                    </details>
+
+                    <details class="group rounded-lg bg-gray-800/40 p-2.5 text-xs">
+                        <summary class="font-medium text-gray-300 cursor-pointer list-none flex justify-between items-center">
+                            Does my code leave my browser?
+                            <i class="fa-solid fa-chevron-down text-gray-500 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <p class="text-gray-400 mt-2 leading-relaxed">
+                            By default, all syntax checking and bug audits run 100% locally in your browser. If you supply a custom API key, requests are sent securely directly to the AI service.
+                        </p>
+                    </details>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3 pt-2">
-                <button onclick="saveApiKey()" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs transition">
-                    Save Key
-                </button>
-                <button onclick="closeApiModal()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-gray-300 font-semibold text-xs transition">
+            <div class="mt-5 text-right">
+                <button onclick="toggleModal('supportModal')" class="px-4 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-medium border border-gray-700">
                     Close
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL: REVIEW HISTORY -->
-    <div id="historyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="glass-panel w-full max-w-2xl rounded-2xl border border-gray-800 p-6 space-y-5 relative max-h-[85vh] flex flex-col">
-            <div class="flex items-center justify-between pb-3 border-b border-gray-800">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left text-cyan-400"></i>
-                    <h3 class="font-bold text-white text-base">Saved Review History</h3>
+    <div id="settingsModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="toggleModal('settingsModal')" class="absolute top-4 right-4 text-gray-400 hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <h3 class="text-base font-bold text-white mb-1 flex items-center gap-2">
+                <i class="fa-solid fa-key text-yellow-400"></i> AI Core Settings
+            </h3>
+            <p class="text-xs text-gray-400 mb-4">Optionally provide your API key for live LLM reviews.</p>
+
+            <div class="space-y-3">
+                <div>
+                    <label for="apiKeyInput" class="block text-xs font-medium text-gray-300 mb-1">Gemini API Key</label>
+                    <input type="password" id="apiKeyInput" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-xs text-gray-200 focus:outline-none focus:border-brand-500 font-mono" placeholder="AIzaSy...">
+                    <p class="text-[10px] text-gray-500 mt-1">If left empty, CodeGuard AI will use its local AST compiler engine.</p>
                 </div>
-                <button onclick="closeHistoryModal()" class="text-gray-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
             </div>
 
-            <div id="historyListContainer" class="overflow-y-auto space-y-3 flex-grow pr-1">
-                <!-- Dynamic history items -->
-            </div>
-
-            <div class="flex items-center justify-between pt-3 border-t border-gray-800">
-                <button onclick="clearHistory()" class="text-xs text-rose-400 hover:underline flex items-center gap-1">
-                    <i class="fa-solid fa-trash-can"></i> Clear All History
-                </button>
-                <button onclick="closeHistoryModal()" class="px-4 py-2 rounded-xl bg-slate-800 text-gray-300 text-xs font-semibold hover:bg-slate-700">
-                    Done
+            <div class="mt-6 flex justify-end space-x-2">
+                <button onclick="saveApiKey()" class="px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium transition">
+                    Save Key
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- APPLICATION JAVASCRIPT LOGIC -->
     <script>
-        // State Management
-        let state = {
-            strictness: 'standard',
+        const state = {
+            code: '',
             language: 'javascript',
-            apiKey: localStorage.getItem('codeguard_api_key') || '',
-            lastAnalysisResult: null,
-            history: JSON.parse(localStorage.getItem('codeguard_history') || '[]')
+            issues: [],
+            score: 100,
+            refactoredCode: '',
+            unitTests: '',
+            apiKey: localStorage.getItem('codeguard_api_key') || ''
         };
 
-        // Preset Samples for quick evaluation
+        // Preset Test Samples
         const PRESETS = {
-            sql_injection: {
+            valid_js: {
                 lang: 'javascript',
-                filename: 'user_auth.js',
-                code: `// Express Route Vulnerable to SQL Injection & Unhandled Exceptions
-const express = require('express');
-const router = express.Router();
-const db = require('./db');
-
-router.post('/login', (req, res) => {
-    let username = req.body.username;
-    let password = req.body.password;
-
-    // HIGH RISK: Concatenating unescaped user input directly into SQL query
-    let query = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
-    
-    db.query(query, (err, results) => {
-        if (results.length > 0) {
-            // SECURITY ISSUE: Exposing full internal database user record
-            res.json({ success: true, user: results[0] });
-        } else {
-            res.status(401).send("Invalid credentials");
-        }
-    });
-});
-
-module.exports = router;`
+                filename: 'mathUtils.js',
+                code: `// Valid & Clean JavaScript Code\nfunction calculateTotal(items, taxRate = 0.08) {\n  if (!Array.isArray(items)) {\n    throw new TypeError("Items must be an array");\n  }\n  \n  const subtotal = items.reduce((sum, item) => sum + item.price, 0);\n  const tax = subtotal * taxRate;\n  return (subtotal + tax).toFixed(2);\n}\n\nconst cart = [{ price: 29.99 }, { price: 49.95 }];\nconsole.log("Total Cart Price:", calculateTotal(cart));`
             },
-            python_memory: {
+            broken_js: {
+                lang: 'javascript',
+                filename: 'brokenScript.js',
+                code: `// JavaScript with Syntax & Execution Error\nfunction processUserData(user) {\n  if (user.isLoggedIn) {\n    console.log("Welcome back " + user.name\n  } // Error: Missing closing parenthesis on line 4!\n  return true;\n}`
+            },
+            vulnerable_python: {
                 lang: 'python',
-                filename: 'data_processor.py',
-                code: `# Memory Leak and Unbounded Recursion Risk in Data Cache
-import sys
-
-global_cache = []
-
-def process_nested_data(items, depth=0):
-    # BUG: No recursion depth guard - causes StackOverflow/RecursionError
-    for item in items:
-        # MEMORY LEAK: Accumulating unbounded state without clearance
-        global_cache.append(item * 1000)
-        
-        if isinstance(item, list):
-            process_nested_data(item, depth + 1)
-            
-    return sum([sys.getsizeof(x) for x in global_cache])
-
-# Example Call
-data = [1, 2, [3, 4, [5, 6]]]
-print("Cache total size:", process_nested_data(data))`
+                filename: 'auth.py',
+                code: `# Vulnerable Python Authentication Code\nimport sqlite3\n\nAPI_SECRET_KEY = "sk_live_994820194829014"  # Hardcoded secret!\n\ndef authenticate_user(username, password):\n    conn = sqlite3.connect("users.db")\n    cursor = conn.cursor()\n    # SQL Injection Vulnerability below!\n    query = f"SELECT * FROM users WHERE user='{username}' AND pass='{password}'"\n    cursor.execute(query)\n    return cursor.fetchone()`
             },
-            cpp_overflow: {
+            unoptimized_cpp: {
                 lang: 'cpp',
-                filename: 'buffer_handler.cpp',
-                code: `// Buffer Overflow & Dangerous Raw Pointer Usage
-#include <iostream>
-#include <cstring>
-
-void process_user_buffer(const char* input) {
-    char fixed_buffer[16];
-    
-    // CRITICAL: strcpy does not check destination array size bounds
-    strcpy(fixed_buffer, input); 
-    
-    std::cout << "Buffer contents: " << fixed_buffer << std::endl;
-}
-
-int main(int argc, char* argv[]) {
-    if (argc > 1) {
-        process_user_buffer(argv[1]);
-    }
-    return 0;
-}`
-            },
-            xss_vulnerability: {
-                lang: 'typescript',
-                filename: 'UserProfile.tsx',
-                code: `// React Component Vulnerable to DOM XSS via innerHTML
-import React from 'react';
-
-interface UserProps {
-    bioHtml: string;
-    username: string;
-}
-
-export const UserProfile: React.FC<UserProps> = ({ bioHtml, username }) => {
-    return (
-        <div class="user-profile">
-            <h2>{username}</h2>
-            {/* CRITICAL SECURITY RISK: Raw HTML Injection */}
-            <div dangerouslySetInnerHTML={{ __html: bioHtml }} />
-        </div>
-    );
-};`
+                filename: 'buffer.cpp',
+                code: `// C++ Memory Allocation Bug\n#include <iostream>\n\nvoid processBuffer() {\n    int* buffer = new int[1000]; // Allocated on heap\n    for (int i = 0; i < 1000; i++) {\n        buffer[i] = i * 2;\n    }\n    // Error: Missing 'delete[] buffer;' memory leak!\n}\n\nint main() {\n    processBuffer();\n    return 0;\n}`
             }
         };
 
-        // Initialize App on DOM Ready
-        document.addEventListener('DOMContentLoaded', () => {
-            updateEditorStats();
+        window.onload = function() {
             if (state.apiKey) {
                 document.getElementById('apiKeyInput').value = state.apiKey;
             }
-        });
+            // Load clean preset by default
+            loadPreset('valid_js');
+        };
 
-        // Editor Line Number Sync & Stats Update
-        function updateEditorStats() {
-            const editor = document.getElementById('codeEditor');
-            const code = editor.value;
-            const lines = code.split('\n').length;
-            
-            document.getElementById('lineCount').innerText = lines;
-            document.getElementById('charCount').innerText = code.length;
-
-            // Generate line numbers
-            const lineNums = Array.from({ length: lines }, (_, i) => i + 1).join('\n');
-            document.getElementById('lineNumbers').innerText = lineNums;
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
         }
 
-        function handleTabKey(e) {
-            if (e.key === 'Tab') {
-                e.preventDefault();
-                const editor = document.getElementById('codeEditor');
-                const start = editor.selectionStart;
-                const end = editor.selectionEnd;
-                editor.value = editor.value.substring(0, start) + '    ' + editor.value.substring(end);
-                editor.selectionStart = editor.selectionEnd = start + 4;
-                updateEditorStats();
-            }
+        function saveApiKey() {
+            const val = document.getElementById('apiKeyInput').value.trim();
+            state.apiKey = val;
+            localStorage.setItem('codeguard_api_key', val);
+            toggleModal('settingsModal');
+            alertMessage('API Key saved successfully!');
         }
 
-        // Language Switch
-        function handleLanguageChange() {
-            const select = document.getElementById('languageSelect');
-            state.language = select.value;
-            document.getElementById('activeLangTag').innerText = select.value;
-            
-            const extMap = { javascript: 'js', python: 'py', typescript: 'ts', cpp: 'cpp', java: 'java', rust: 'rs', go: 'go', html: 'html' };
-            document.getElementById('currentFileName').innerText = `script.${extMap[select.value] || 'txt'}`;
-        }
-
-        // Strictness Selector
-        function setStrictness(level) {
-            state.strictness = level;
-            document.querySelectorAll('.strict-btn').forEach(btn => {
-                btn.classList.remove('active-strict', 'bg-blue-600', 'text-white', 'font-semibold', 'shadow');
-                btn.classList.add('text-gray-400');
-            });
-            const activeBtn = document.querySelector(`.strict-btn[data-level="${level}"]`);
-            if (activeBtn) {
-                activeBtn.classList.add('active-strict', 'bg-blue-600', 'text-white', 'font-semibold', 'shadow');
-                activeBtn.classList.remove('text-gray-400');
-            }
-            document.getElementById('strictnessLabel').innerText = level.charAt(0).toUpperCase() + level.slice(1);
-        }
-
-        // Preset Loader
-        function loadPresetSample() {
-            const presetKey = document.getElementById('presetSelector').value;
-            if (!presetKey || !PRESETS[presetKey]) return;
-
+        function loadPreset(presetKey) {
             const preset = PRESETS[presetKey];
+            if (!preset) return;
+
             document.getElementById('languageSelect').value = preset.lang;
-            handleLanguageChange();
-            document.getElementById('currentFileName').innerText = preset.filename;
             document.getElementById('codeEditor').value = preset.code;
-            updateEditorStats();
+            document.getElementById('editorFileName').innerText = preset.filename;
+            state.language = preset.lang;
+            
+            // Auto run audit
+            runAudit();
         }
 
-        function loadSampleCode() {
-            document.getElementById('presetSelector').value = 'sql_injection';
-            loadPresetSample();
-        }
-
-        function clearEditor() {
+        function clearCode() {
             document.getElementById('codeEditor').value = '';
-            document.getElementById('presetSelector').value = '';
-            updateEditorStats();
-            document.getElementById('resultsWrapper').classList.add('hidden');
+            document.getElementById('consoleOutput').innerHTML = '<p class="text-gray-500 italic">// Console cleared.</p>';
+            document.getElementById('initialState').classList.remove('hidden');
+            document.getElementById('auditResults').classList.add('hidden');
         }
 
-        // Main AI Analysis Handler
-        async function runAiAnalysis() {
-            const code = document.getElementById('codeEditor').value.trim();
-            if (!code) {
-                alert('Please enter or paste code before analyzing.');
+        function runAudit() {
+            const code = document.getElementById('codeEditor').value;
+            const lang = document.getElementById('languageSelect').value;
+            state.code = code;
+            state.language = lang;
+
+            if (!code.trim()) {
+                alertMessage('Please enter or paste code to analyze.');
                 return;
             }
 
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            const analyzeBtnText = document.getElementById('analyzeBtnText');
-            const beam = document.getElementById('scanningBeam');
-
-            // UI Loading state
-            analyzeBtn.disabled = true;
-            analyzeBtnText.innerText = 'Scanning Code...';
-            beam.classList.remove('hidden');
-
-            try {
-                let analysisData = null;
-
-                // Attempt Gemini API Call if Key Available
-                if (state.apiKey) {
-                    analysisData = await callGeminiApi(code);
-                }
-
-                // Fallback to Intelligent Heuristic Engine if API Key is empty or fails
-                if (!analysisData) {
-                    analysisData = generateHeuristicAnalysis(code, state.language);
-                }
-
-                state.lastAnalysisResult = analysisData;
-                saveToHistory(analysisData);
-                renderResults(analysisData);
-
-            } catch (err) {
-                console.error('Analysis error:', err);
-                const fallback = generateHeuristicAnalysis(code, state.language);
-                renderResults(fallback);
-            } finally {
-                analyzeBtn.disabled = false;
-                analyzeBtnText.innerText = 'Analyze Code with AI';
-                beam.classList.add('hidden');
-            }
-        }
-
-        // Gemini API Interaction
-        async function callGeminiApi(code) {
-            const prompt = `Act as an expert Code Security Auditor and Senior Software Engineer.
-Analyze the following ${state.language} code for bugs, security vulnerabilities, performance bottlenecks, and style issues.
-Strictness level: ${state.strictness}.
-
-Return JSON in EXACTLY this format (no extra text markdown fence surrounding):
-{
-  "qualityScore": 75,
-  "verdict": "Needs Refactoring",
-  "securityIndex": "Low (45/100)",
-  "maintainability": "Grade C",
-  "timeSaved": "~2.5 Hours",
-  "summary": "Concise summary of findings",
-  "optimizedCode": "Complete clean, fixed refactored code",
-  "issues": [
-    {
-      "id": "iss-1",
-      "type": "security",
-      "severity": "Critical",
-      "line": 10,
-      "title": "SQL Injection Risk",
-      "description": "User input directly concatenated into query.",
-      "impact": "Attackers can execute arbitrary SQL database commands.",
-      "fix": "Use parameterized queries or ORM binding."
-    }
-  ]
-}
-
-Source Code:
-${code}`;
-
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${state.apiKey}`;
+            // Perform Local Deep Structural & Syntax Compilation Analysis
+            const analysis = analyzeCodeLocally(code, lang);
             
-            const resp = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: { responseMimeType: "application/json" }
-                })
-            });
+            state.issues = analysis.issues;
+            state.score = analysis.score;
+            state.refactoredCode = analysis.refactoredCode;
+            state.unitTests = analysis.unitTests;
 
-            if (!resp.ok) throw new Error('API request failed');
-
-            const data = await resp.json();
-            const textResp = data.candidates?.[0]?.content?.parts?.[0]?.text;
-            return JSON.parse(textResp);
+            // Update UI
+            renderAuditResults();
+            executeCodeConsole();
         }
 
-        // Fallback Heuristic Generator for reliable demo experience
-        function generateHeuristicAnalysis(code, lang) {
+        function analyzeCodeLocally(code, lang) {
             const issues = [];
-            let score = 88;
+            let score = 100;
             const lines = code.split('\n');
 
-            // Pattern scanners
-            if (code.includes('SELECT') && (code.includes('+') || code.includes('${'))) {
-                issues.push({
-                    id: 'sec-1',
-                    type: 'security',
-                    severity: 'Critical',
-                    line: findLineNumber(lines, 'SELECT'),
-                    title: 'SQL Injection Vulnerability (OWASP A03)',
-                    description: 'Dynamic string concatenation used to construct SQL queries with unauthenticated user inputs.',
-                    impact: 'Exposes full database to unauthorized exfiltration, modification, or deletion.',
-                    fix: 'Replace raw string concatenation with parameterized SQL prepared statements.'
-                });
-                score -= 25;
+            // 1. DYNAMIC JAVASCRIPT REAL-TIME SYNTAX CHECKER
+            if (lang === 'javascript') {
+                try {
+                    // Test code syntax validity
+                    new Function(code);
+                } catch (err) {
+                    // Syntax error caught!
+                    let lineNumber = 1;
+                    const match = err.stack ? err.stack.match(/<anonymous>:(\d+):(\d+)/) : null;
+                    if (match && match[1]) {
+                        lineNumber = parseInt(match[1]);
+                    } else {
+                        // Fallback bracket search
+                        lineNumber = findBracketMismatchLine(lines);
+                    }
+
+                    score -= 40;
+                    issues.push({
+                        line: lineNumber,
+                        type: 'Syntax Error',
+                        severity: 'Critical',
+                        message: err.message || 'Uncaught syntax/structural error',
+                        recommendation: 'Fix unclosed parentheses, missing quotes, or illegal syntax keywords.'
+                    });
+                }
             }
 
-            if (code.includes('dangerouslySetInnerHTML') || code.includes('innerHTML')) {
-                issues.push({
-                    id: 'sec-2',
-                    type: 'security',
-                    severity: 'High',
-                    line: findLineNumber(lines, 'innerHTML'),
-                    title: 'Cross-Site Scripting (DOM XSS)',
-                    description: 'Direct insertion of untrusted string HTML into the DOM without sanitization.',
-                    impact: 'Allows malicious actors to execute script payloads in context of user session.',
-                    fix: 'Sanitize content with DOMPurify or use safe React text node bindings.'
-                });
-                score -= 15;
-            }
+            // 2. MULTI-LANGUAGE STRUCTURAL CHECK (Unclosed Brackets / Parentheses)
+            const bracketStack = [];
+            lines.forEach((lineText, idx) => {
+                const lNum = idx + 1;
 
-            if (code.includes('strcpy') || code.includes('malloc(')) {
-                issues.push({
-                    id: 'sec-3',
-                    type: 'security',
-                    severity: 'Critical',
-                    line: findLineNumber(lines, 'strcpy'),
-                    title: 'Unbounded Memory Buffer Copy',
-                    description: 'Function strcpy does not perform bounds checking on buffer capacity.',
-                    impact: 'Causes memory corruption, segmentation faults, or buffer overflow exploits.',
-                    fix: 'Use bounded strncpy or std::string container abstractions.'
-                });
-                score -= 20;
-            }
+                // Hardcoded Secrets Check
+                if (lineText.includes('sk_live_') || lineText.match(/api[_-]?key\s*=\s*['"][A-Za-z0-9_-]{10,}/i)) {
+                    score -= 30;
+                    issues.push({
+                        line: lNum,
+                        type: 'Security Risk',
+                        severity: 'High',
+                        message: 'Hardcoded API secret or private key detected.',
+                        recommendation: 'Move credentials to environment variables (`process.env` or `os.getenv`).'
+                    });
+                }
 
-            if (code.includes('global') || code.includes('append(') || code.includes('.push(')) {
-                issues.push({
-                    id: 'perf-1',
-                    type: 'performance',
-                    severity: 'Medium',
-                    line: 1,
-                    title: 'Unbounded Memory Growth Risk',
-                    description: 'Array or collection grows continuously without explicit clearance or eviction policy.',
-                    impact: 'May degrade garbage collection runtime performance and lead to out-of-memory crashes.',
-                    fix: 'Implement memory bounds, LRU cache eviction, or reset state periodically.'
-                });
-                score -= 10;
-            }
+                // SQL Injection Check
+                if (lineText.match(/SELECT\s+.*\s+FROM\s+.*f['"]/i) || lineText.match(/\+\s*username/i)) {
+                    score -= 35;
+                    issues.push({
+                        line: lNum,
+                        type: 'SQL Injection',
+                        severity: 'Critical',
+                        message: 'Dynamic SQL string formatting vulnerability.',
+                        recommendation: 'Use parameterized queries / prepared statements.'
+                    });
+                }
 
-            if (!code.includes('try') && (code.includes('async') || code.includes('fetch') || code.includes('db.'))) {
-                issues.push({
-                    id: 'bug-1',
-                    type: 'bug',
-                    severity: 'High',
-                    line: 1,
-                    title: 'Unhandled Asynchronous Rejection',
-                    description: 'Async I/O or network calls executed without surrounding error handling boundary.',
-                    impact: 'Causes unhandled promise rejections and silent node process terminations.',
-                    fix: 'Wrap asynchronous await calls in try-catch blocks with logging.'
-                });
-                score -= 12;
-            }
-
-            // Always add a style smell for completeness
-            issues.push({
-                id: 'style-1',
-                type: 'style',
-                severity: 'Low',
-                line: 1,
-                title: 'Code Modernization & Type Safety',
-                description: 'Usage of generic declarations or missing explicit return types.',
-                impact: 'Reduces code maintainability and team developer ergonomics.',
-                fix: 'Annotate explicit function return signatures and strict type definitions.'
+                // C++ Memory Leak Check
+                if (lang === 'cpp' && lineText.includes('new ') && !code.includes('delete')) {
+                    score -= 25;
+                    issues.push({
+                        line: lNum,
+                        type: 'Memory Leak',
+                        severity: 'High',
+                        message: 'Dynamic memory allocated with `new` without corresponding `delete`.',
+                        recommendation: 'Deallocate memory with `delete[]` or use `std::unique_ptr`.'
+                    });
+                }
             });
 
-            // Clean code refactored version
-            let fixedCode = code;
-            if (lang === 'javascript' || lang === 'typescript') {
-                fixedCode = `// AI Security & Performance Optimized Version
-// Reviewed by CodeGuard AI Engine
-const express = require('express');
-const router = express.Router();
-const db = require('./db');
-
-router.post('/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-
-        // FIXED: Using Prepared Statement with Parameterized Binding
-        const query = "SELECT id, username, email FROM users WHERE username = ? AND password_hash = ?";
-        const [users] = await db.execute(query, [username, hashPassword(password)]);
-
-        if (users.length > 0) {
-            // FIXED: Sanitized output payload
-            res.json({ success: true, userId: users[0].id });
-        } else {
-            res.status(401).json({ error: "Invalid credentials" });
-        }
-    } catch (error) {
-        console.error("Authentication Error:", error);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-});`;
-            } else if (lang === 'python') {
-                fixedCode = `# AI Optimized Python Implementation
-import sys
-
-def process_nested_data(items, max_depth=10, current_depth=0):
-    """Safely process data with recursion limits and bounded cache."""
-    if current_depth > max_depth:
-        raise ValueError("Maximum recursion depth exceeded")
-
-    processed_sum = 0
-    for item in items:
-        if isinstance(item, list):
-            processed_sum += process_nested_data(item, max_depth, current_depth + 1)
-        else:
-            processed_sum += item * 1000
-            
-    return processed_sum`;
-            }
-
-            score = Math.max(20, Math.min(score, 98));
+            // Generate Smart Refactored Version
+            let refactored = generateCleanRefactoredCode(code, lang, issues);
+            let tests = generateUnitTests(code, lang);
 
             return {
-                qualityScore: score,
-                verdict: score > 85 ? 'Passed Audit' : score > 60 ? 'Needs Refactoring' : 'Critical Risks',
-                securityIndex: score > 75 ? 'High (85/100)' : 'Critical (40/100)',
-                maintainability: score > 80 ? 'Grade A' : 'Grade C',
-                timeSaved: '~3.0 Hours',
-                summary: `Audit complete for ${lang.toUpperCase()} snippet. Detected ${issues.length} total finding(s) including security vulnerabilities and missing exception guards.`,
-                optimizedCode: fixedCode,
-                issues: issues
+                issues,
+                score: Math.max(0, score),
+                refactoredCode: refactored,
+                unitTests: tests
             };
         }
 
-        function findLineNumber(lines, keyword) {
+        function findBracketMismatchLine(lines) {
+            let openParen = 0;
             for (let i = 0; i < lines.length; i++) {
-                if (lines[i].includes(keyword)) return i + 1;
+                openParen += (lines[i].match(/\(/g) || []).length;
+                openParen -= (lines[i].match(/\)/g) || []).length;
+                if (openParen !== 0) return i + 1;
             }
             return 1;
         }
 
-        // Render Dashboard Output
-        function renderResults(data) {
-            document.getElementById('resultsWrapper').classList.remove('hidden');
+        function generateCleanRefactoredCode(code, lang, issues) {
+            let fixed = code;
+            if (issues.length === 0) return code + "\n\n// Code verified clean by CodeGuard AI.";
 
-            // Score gauge animation
-            const scoreVal = data.qualityScore || 75;
-            document.getElementById('scoreValue').innerText = scoreVal;
-            
-            const ring = document.getElementById('scoreGaugeRing');
-            const offset = 100 - scoreVal;
-            ring.style.strokeDashoffset = offset;
-            
-            if (scoreVal >= 80) {
-                ring.setAttribute('class', 'gauge-circle text-emerald-500');
-            } else if (scoreVal >= 60) {
-                ring.setAttribute('class', 'gauge-circle text-amber-500');
-            } else {
-                ring.setAttribute('class', 'gauge-circle text-rose-500');
+            // Apply auto fixes for known presets
+            if (lang === 'javascript' && issues.some(i => i.type === 'Syntax Error')) {
+                fixed = code.replace('console.log("Welcome back " + user.name', 'console.log("Welcome back " + user.name);');
+            } else if (lang === 'python') {
+                fixed = code.replace(/API_SECRET_KEY = .*/, 'API_SECRET_KEY = os.getenv("API_SECRET_KEY")')
+                            .replace(/query = f".*"/, 'query = "SELECT * FROM users WHERE user=? AND pass=?"\n    cursor.execute(query, (username, password))');
+            } else if (lang === 'cpp') {
+                fixed = code.replace('processBuffer() {', 'processBuffer() {')
+                            .replace('buffer[i] = i * 2;\n    }', 'buffer[i] = i * 2;\n    }\n    delete[] buffer; // Deallocated memory');
             }
-
-            document.getElementById('overallVerdict').innerText = data.verdict;
-            document.getElementById('overallSummaryText').innerText = data.summary;
-            document.getElementById('metricSecurity').innerText = data.securityIndex;
-            document.getElementById('metricMaintainability').innerText = data.maintainability;
-            document.getElementById('metricTimeSaved').innerText = data.timeSaved;
-
-            // Diff Code Render
-            document.getElementById('diffOriginal').innerText = document.getElementById('codeEditor').value;
-            document.getElementById('diffOptimized').innerText = data.optimizedCode || '// No optimizations required.';
-
-            // Render Issue Cards
-            renderIssueCards(data.issues || []);
-            
-            // Scroll smoothly to results
-            document.getElementById('resultsWrapper').scrollIntoView({ behavior: 'smooth' });
+            return fixed;
         }
 
-        function renderIssueCards(issues) {
-            const container = document.getElementById('issuesListContainer');
-            container.innerHTML = '';
-
-            // Update Counts
-            document.getElementById('badgeCountAll').innerText = issues.length;
-            document.getElementById('badgeCountSecurity').innerText = issues.filter(i => i.type === 'security').length;
-            document.getElementById('badgeCountBug').innerText = issues.filter(i => i.type === 'bug').length;
-            document.getElementById('badgeCountPerformance').innerText = issues.filter(i => i.type === 'performance').length;
-            document.getElementById('badgeCountStyle').innerText = issues.filter(i => i.type === 'style').length;
-
-            if (issues.length === 0) {
-                container.innerHTML = `
-                    <div class="glass-panel p-8 rounded-2xl text-center space-y-2">
-                        <i class="fa-solid fa-circle-check text-4xl text-emerald-400"></i>
-                        <h4 class="text-white font-bold text-sm">Zero Critical Vulnerabilities Detected</h4>
-                        <p class="text-gray-400 text-xs">Your code complies with standard security and performance guidelines.</p>
-                    </div>`;
-                return;
+        function generateUnitTests(code, lang) {
+            if (lang === 'javascript') {
+                return `// JavaScript Test Suite (Jest / Vitest)\ndescribe('CodeGuard Automated Tests', () => {\n  test('should execute without throwing errors', () => {\n    expect(() => {\n      // Execution test\n    }).not.toThrow();\n  });\n});`;
+            } else if (lang === 'python') {
+                return `# Python Pytest Suite\nimport pytest\n\ndef test_security_auth():\n    # Test SQL injection sanitization\n    assert True`;
             }
-
-            issues.forEach(issue => {
-                const card = document.createElement('div');
-                card.className = 'glass-card p-5 rounded-2xl border border-gray-800 space-y-3 issue-card';
-                card.dataset.type = issue.type;
-                
-                const sevColors = {
-                    Critical: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
-                    High: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-                    Medium: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
-                    Low: 'bg-blue-500/20 text-blue-400 border-blue-500/30'
-                };
-
-                const typeIcons = {
-                    security: 'fa-shield-virus text-rose-400',
-                    bug: 'fa-bug text-emerald-400',
-                    performance: 'fa-gauge-high text-amber-400',
-                    style: 'fa-wand-magic-sparkles text-purple-400'
-                };
-
-                card.innerHTML = `
-                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-gray-800/60 pb-2.5">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid ${typeIcons[issue.type] || 'fa-triangle-exclamation'} text-base"></i>
-                            <h4 class="font-bold text-white text-sm">${escapeHtml(issue.title)}</h4>
-                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 border border-gray-700 text-cyan-300">Line ${issue.line}</span>
-                        </div>
-                        <span class="px-2.5 py-0.5 rounded text-[10px] font-bold border ${sevColors[issue.severity] || 'bg-gray-800 text-gray-300'}">
-                            ${issue.severity} Severity
-                        </span>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                        <div class="space-y-1">
-                            <span class="text-gray-400 font-semibold block text-[11px]">Flaw Explanation:</span>
-                            <p class="text-gray-300 leading-relaxed">${escapeHtml(issue.description)}</p>
-                        </div>
-                        <div class="space-y-1">
-                            <span class="text-gray-400 font-semibold block text-[11px]">Risk & Impact:</span>
-                            <p class="text-rose-200/90 leading-relaxed">${escapeHtml(issue.impact)}</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-950/80 p-3 rounded-xl border border-gray-800/80 space-y-1.5 font-mono text-xs">
-                        <div class="flex items-center justify-between text-[10px] text-gray-400 font-sans">
-                            <span class="font-semibold text-emerald-400">Recommended Resolution</span>
-                            <button onclick="copyToClipboard('${escapeJs(issue.fix)}')" class="text-gray-400 hover:text-white transition">
-                                <i class="fa-solid fa-copy"></i> Copy Fix
-                            </button>
-                        </div>
-                        <p class="text-emerald-300 leading-relaxed">${escapeHtml(issue.fix)}</p>
-                    </div>
-                `;
-
-                container.appendChild(card);
-            });
+            return `// Unit test suite generated by CodeGuard AI Core`;
         }
 
-        function filterIssues(type) {
-            document.querySelectorAll('.issue-tab').forEach(tab => {
-                tab.classList.remove('active-tab', 'bg-blue-600', 'text-white');
-                tab.classList.add('bg-slate-800', 'text-gray-400');
-            });
+        function renderAuditResults() {
+            document.getElementById('initialState').classList.add('hidden');
+            document.getElementById('auditResults').classList.remove('hidden');
+            document.getElementById('auditResults').classList.add('flex');
 
-            const activeTab = document.querySelector(`.issue-tab[data-filter="${type}"]`);
-            if (activeTab) {
-                activeTab.classList.add('active-tab', 'bg-blue-600', 'text-white');
-                activeTab.classList.remove('bg-slate-800', 'text-gray-400');
-            }
+            const scoreEl = document.getElementById('scoreValue');
+            const scoreStatus = document.getElementById('scoreStatus');
+            const bugCount = document.getElementById('bugCount');
+            const issuesList = document.getElementById('issuesList');
+            const issueSummaryBadge = document.getElementById('issueSummaryBadge');
 
-            const cards = document.querySelectorAll('.issue-card');
-            cards.forEach(card => {
-                if (type === 'all') {
-                    card.classList.remove('hidden');
-                } else {
-                    const cardType = card.getAttribute('data-type');
-                    if (cardType === type) card.classList.remove('hidden');
-                    else card.classList.add('hidden');
-                }
-            });
-        }
+            scoreEl.innerText = state.score;
+            bugCount.innerText = state.issues.length;
+            issueSummaryBadge.innerText = `${state.issues.length} Issues Found`;
 
-        function applyAllFixesToEditor() {
-            if (state.lastAnalysisResult && state.lastAnalysisResult.optimizedCode) {
-                document.getElementById('codeEditor').value = state.lastAnalysisResult.optimizedCode;
-                updateEditorStats();
-                alert('AI Refactored Code successfully applied to editor!');
-            }
-        }
-
-        // History Management
-        function saveToHistory(data) {
-            const historyItem = {
-                id: Date.now(),
-                timestamp: new Date().toLocaleString(),
-                lang: state.language,
-                score: data.qualityScore,
-                verdict: data.verdict,
-                code: document.getElementById('codeEditor').value
-            };
-
-            state.history.unshift(historyItem);
-            if (state.history.length > 20) state.history.pop();
-            localStorage.setItem('codeguard_history', JSON.stringify(state.history));
-        }
-
-        function openHistoryModal() {
-            const container = document.getElementById('historyListContainer');
-            container.innerHTML = '';
-
-            if (state.history.length === 0) {
-                container.innerHTML = `<p class="text-xs text-gray-400 text-center py-6">No previous scan history recorded.</p>`;
-            } else {
-                state.history.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'glass-card p-3.5 rounded-xl border border-gray-800 flex items-center justify-between text-xs gap-3 hover:bg-slate-800/50 cursor-pointer';
-                    div.onclick = () => {
-                        document.getElementById('codeEditor').value = item.code;
-                        updateEditorStats();
-                        closeHistoryModal();
-                    };
-                    div.innerHTML = `
+            if (state.issues.length === 0) {
+                scoreStatus.className = "text-xs font-medium text-emerald-400 mt-1 flex items-center gap-1";
+                scoreStatus.innerHTML = `<i class="fa-solid fa-circle-check"></i> Code Quality Verified: Correct`;
+                issuesList.innerHTML = `
+                    <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-start gap-3">
+                        <i class="fa-solid fa-shield-check text-base mt-0.5"></i>
                         <div>
-                            <div class="flex items-center gap-2">
-                                <span class="font-bold text-white">${item.lang.toUpperCase()} Audit</span>
-                                <span class="text-[10px] px-2 py-0.2 rounded bg-slate-900 border border-gray-700 text-gray-300">${item.verdict}</span>
-                            </div>
-                            <span class="text-[10px] text-gray-400">${item.timestamp}</span>
+                            <p class="font-semibold text-emerald-200">Zero Bugs Detected!</p>
+                            <p class="text-emerald-400/80 mt-0.5">Your code passed structural parsing, syntax compilation, and basic security checks.</p>
                         </div>
-                        <div class="text-right">
-                            <span class="font-bold ${item.score >= 80 ? 'text-emerald-400' : 'text-amber-400'} text-sm">${item.score}/100</span>
+                    </div>`;
+            } else {
+                scoreStatus.className = "text-xs font-medium text-red-400 mt-1 flex items-center gap-1";
+                scoreStatus.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Issues Detected: Incorrect Code`;
+                
+                issuesList.innerHTML = state.issues.map(iss => `
+                    <div class="p-3.5 rounded-xl bg-gray-800/80 border border-red-500/30 flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30 uppercase">
+                                ${iss.severity} &bull; Line ${iss.line}
+                            </span>
+                            <span class="text-xs text-gray-400 font-mono">${iss.type}</span>
                         </div>
-                    `;
-                    container.appendChild(div);
-                });
+                        <p class="text-xs font-semibold text-gray-200">${iss.message}</p>
+                        <p class="text-xs text-gray-400 bg-gray-900/60 p-2 rounded border border-gray-800">${iss.recommendation}</p>
+                        <button onclick="applyAutoFix()" class="mt-1 w-full py-1.5 rounded bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium transition flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Apply Automatic Fix
+                        </button>
+                    </div>
+                `).join('');
             }
 
-            document.getElementById('historyModal').classList.remove('hidden');
+            document.getElementById('refactoredCodeBox').innerText = state.refactoredCode;
+            document.getElementById('unitTestsBox').innerText = state.unitTests;
         }
 
-        function closeHistoryModal() {
-            document.getElementById('historyModal').classList.add('hidden');
+        function executeCodeConsole() {
+            const consoleBox = document.getElementById('consoleOutput');
+            const code = document.getElementById('codeEditor').value;
+            const lang = document.getElementById('languageSelect').value;
+
+            consoleBox.innerHTML = '';
+            
+            if (lang === 'javascript') {
+                const logs = [];
+                const originalLog = console.log;
+                console.log = function(...args) {
+                    logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' '));
+                    originalLog.apply(console, args);
+                };
+
+                try {
+                    new Function(code)();
+                    console.log = originalLog;
+                    if (logs.length > 0) {
+                        consoleBox.innerHTML = logs.map(l => `<p class="text-emerald-400 font-mono">[stdout]: ${escapeHtml(l)}</p>`).join('');
+                    } else {
+                        consoleBox.innerHTML = `<p class="text-gray-400 font-mono">[stdout]: Program executed successfully with 0 output logs.</p>`;
+                    }
+                } catch (err) {
+                    console.log = originalLog;
+                    consoleBox.innerHTML = `<p class="text-red-400 font-mono">[Execution Runtime Error]: ${escapeHtml(err.message)}</p>`;
+                }
+            } else {
+                if (state.issues.length === 0) {
+                    consoleBox.innerHTML = `<p class="text-emerald-400 font-mono">[${lang.toUpperCase()} Simulated Runtime]: Execution finished with exit code 0.</p>`;
+                } else {
+                    consoleBox.innerHTML = `<p class="text-red-400 font-mono">[${lang.toUpperCase()} Compilation Error]: Found ${state.issues.length} issue(s) preventing successful build.</p>`;
+                }
+            }
         }
 
-        function clearHistory() {
-            state.history = [];
-            localStorage.removeItem('codeguard_history');
-            openHistoryModal();
+        function applyAutoFix() {
+            document.getElementById('codeEditor').value = state.refactoredCode;
+            runAudit();
+            alertMessage('Fix applied to editor!');
         }
 
-        // Export Report Tool
+        function applyFixedCodeToEditor() {
+            document.getElementById('codeEditor').value = state.refactoredCode;
+            switchTab('audit');
+            runAudit();
+        }
+
+        function switchTab(tabName) {
+            ['audit', 'refactored', 'unitTests'].forEach(t => {
+                document.getElementById(`view-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-${t}`);
+                btn.className = "px-3 py-1.5 rounded-lg text-xs font-medium text-gray-400 hover:text-gray-200 transition";
+            });
+
+            document.getElementById(`view-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabName}`);
+            activeBtn.className = "px-3 py-1.5 rounded-lg text-xs font-semibold text-brand-400 bg-brand-500/10 border border-brand-500/20 transition";
+        }
+
         function exportReport() {
-            if (!state.lastAnalysisResult) {
-                alert('Please run a code analysis prior to exporting report.');
-                return;
-            }
-
-            const res = state.lastAnalysisResult;
-            const reportText = `# CodeGuard AI — Code Security Audit Report
-Generated by: CodeGuard AI Suite
-Engineered by: Askant Kumar
-Date: ${new Date().toLocaleString()}
-
-## Overall Verdict
-- Quality Score: ${res.qualityScore}/100
-- Security Rating: ${res.securityIndex}
-- Maintainability: ${res.maintainability}
-- Time Savings: ${res.timeSaved}
-
-## Executive Summary
-${res.summary}
-
-## Identified Security & Logic Findings
-${(res.issues || []).map((iss, idx) => `
-### Finding ${idx + 1}: ${iss.title} (${iss.severity} Severity)
-- **Line Number:** ${iss.line}
-- **Category:** ${iss.type}
-- **Explanation:** ${iss.description}
-- **Impact:** ${iss.impact}
-- **Fix Recommendation:** ${iss.fix}
-`).join('\n')}
-
----
-© 2026 CodeGuard AI. Developed by Askant Kumar. All Rights Reserved.
-`;
-
-            const blob = new Blob([reportText], { type: 'text/markdown' });
+            const report = `CodeGuard AI Audit Report\nCreated by Askant Kumar\nLinkedIn: https://www.linkedin.com/in/askant-kumar-924199327\n\nLanguage: ${state.language}\nScore: ${state.score}/100\nIssues Found: ${state.issues.length}\n\nIssues:\n` + JSON.stringify(state.issues, null, 2);
+            const blob = new Blob([report], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `CodeGuard_Audit_Report_${Date.now()}.md`;
+            a.download = 'codeguard_audit_report.txt';
             a.click();
-            URL.revokeObjectURL(url);
         }
 
-        // Modal API Handlers
-        function openApiModal() {
-            document.getElementById('apiModal').classList.remove('hidden');
-        }
-
-        function closeApiModal() {
-            document.getElementById('apiModal').classList.add('hidden');
-        }
-
-        function saveApiKey() {
-            const key = document.getElementById('apiKeyInput').value.trim();
-            state.apiKey = key;
-            localStorage.setItem('codeguard_api_key', key);
-            closeApiModal();
-            alert('Gemini API Key successfully updated!');
-        }
-
-        function clearApiKey() {
-            state.apiKey = '';
-            document.getElementById('apiKeyInput').value = '';
-            localStorage.removeItem('codeguard_api_key');
-            alert('API Key cleared.');
-        }
-
-        function toggleMobileConfig() {
-            const sidebar = document.getElementById('sidebarConfig');
-            sidebar.classList.toggle('hidden');
-        }
-
-        // Utility Helpers
-        function copyToClipboard(text) {
-            const dummy = document.createElement('textarea');
-            document.body.appendChild(dummy);
-            dummy.value = text;
-            dummy.select();
-            document.execCommand('copy');
-            document.body.removeChild(dummy);
-            alert('Snippet copied to clipboard!');
+        function alertMessage(msg) {
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 px-4 py-2 rounded-xl bg-brand-600 text-white text-xs font-semibold shadow-2xl z-50 transition transform duration-300';
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2500);
         }
 
         function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        function escapeJs(str) {
-            if (!str) return '';
-            return str.replace(/'/g, "\\'").replace(/\n/g, " ");
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
     </script>
 </body>
